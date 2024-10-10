@@ -16,9 +16,10 @@ This repository contains a machine learning model for predicting the pathogenici
 The project applies a machine learning pipeline to classify missense mutations as **benign** or **pathogenic** using a dataset obtained from ClinVar. The model leverages amino acid sequence features, Bayesian hyperparameter tuning, and XGBoost for classification. It also compares performance against the **SIFT** and **PolyPhen2** tools.
 
 ## Key Features
-- **Bayesian Hyperparameter Tuning:** Optimal model parameters were selected using Bayesian optimization. The tuning process reached saturation, meaning that further optimization would yield diminishing returns. Below is a plot showing how the model’s performance plateaued over successive iterations:
+- **Bayesian Hyperparameter Tuning:** Optimal model parameters were selected using Bayesian optimization. The tuning process reached saturation, meaning that further optimization would yield diminishing returns. Below is a plot showing how the model’s performance plateaued over successive iterations, evaluated using 5-fold Cross Validation:
 
 ![tune_plot](https://github.com/user-attachments/assets/0728b69c-53c2-47a5-9ae1-f87866dcd543)
+
 
 
 
