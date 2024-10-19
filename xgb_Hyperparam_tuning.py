@@ -12,7 +12,7 @@ from skopt.space import Real, Integer
 
 def prepare_data():   
     
-    # Creating the corrected dictionary with frequencies in decimal format
+    # Creating the corrected dictionary with background frequencies in decimal format
     amino_acid_frequencies = {
     'A': 0.074,  # Alanine
     'R': 0.042,  # Arginine
@@ -42,13 +42,10 @@ def prepare_data():
     # Importing the train data and dropping anything that is included in the test data
     data_train = pd.read_csv('output/cleaned_train.csv')
     #data_test = pd.read_csv(r'\\wsl.localhost\Ubuntu\home\gyuszi\data/HGVS_2014_benchmark.tsv', delimiter= '\t')
-    
-    # Removing any record that is also in the test set
-    data_train.iloc[:,0] = data_train.iloc[:,0].apply(lambda x : str(x).strip())
+ 
     
     
-    
-    # Dropping U and * containing records (They are not in the test data)
+    # Dropping U and * containing records (They are not in the test data, U is Selenocysteine and * is a stop codon)
     data_train = data_train.where(data_train != '*')
     data_train = data_train.where(data_train != 'U')
     data_train = data_train.where(data_train != 'o')
@@ -57,8 +54,7 @@ def prepare_data():
     data_train = data_train.dropna()
     
     
-    # Label encoding the amino acids by their hidrophobicity (Herman hydrophobicity was used as it gives a unique value for each aa) and the stop codon is labeled as 1000
-    
+    # List of amino acids common in beta helices
     beta_sheet_aa = [
         "I",  # Isoleucine
         "V",  # Valine
@@ -83,7 +79,8 @@ def prepare_data():
         "H",  # Histidine
         "S"   # Serine
     ]
-
+    # Label encoding the amino acids by their hidrophobicity (Eisenberg hydrophobicity was used as it gives a unique value for each aa, need for proper label encoding) and the stop codon is labeled as 1000
+    
     hydrophobicity_dict_eisenberg = {
        'A': 0.62,   # Alanine
        'C': 0.29,   # Cysteine
@@ -155,7 +152,7 @@ def prepare_data():
     
     
     
-    
+# A class to save data ROC AUCs during the hyperparameter tuning. This will enable us to plot it later
 class SaveScoreCallback:
     def __init__(self):
         self.scores = []
@@ -165,7 +162,7 @@ class SaveScoreCallback:
         self.scores.append(-result['fun'])  # 'fun' holds the best score from the current iteration
 
 
-
+# Function for hyperparameter tuning/ searching the hyperparameter space
 def search(X,y):
     X = X.apply(pd.to_numeric, errors='coerce')
     # Creating a decision tree classifier
@@ -187,7 +184,7 @@ def search(X,y):
     'scale_pos_weight': Real(0.1, 10)                # Control the balance of positive and negative weights
     }
 
-    #stratified k-fold makes sure the train test splits are right
+    # Stratified k-fold makes sure the train test splits are right
     stratified_kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     
     # Model for hyperparameter tuning, bayes search is more effective in searching a big hyperparameter space then other models. High iteration was set because of the size of the space.
@@ -198,7 +195,7 @@ def search(X,y):
     tree = XGBClassifier(**bayes_search.best_params_)
     tree.fit(X, y)
   
-    
+    # Plotting the feature importances
     importances = tree.feature_importances_
     indices = np.argsort(importances)[::-1]
     import matplotlib.pyplot as plt
@@ -210,6 +207,7 @@ def search(X,y):
     print("Best hyperparameters:", bayes_search.best_params_)
     return save_score_cb.scores
 def plot(scores): 
+    # Plotting the hyperparameter tuning process. X: iterations Y: Score (ROC AUC)
     plt.close()
     plt.clf()
     plt.plot(np.arange(len(scores)), scores, label='ROC AUC')
@@ -227,22 +225,9 @@ def main():
     
     scores = search(X, y)  # prints best parameters, returns scores for iterations
     plot(scores) #plots the scores against iterations
-    
-    
-main()
-'''''
-# Creating and fitting the model
-tree = DecisionTreeClassifier(bayes_search.best_params_)
-tree.fit(X_train, y_train)
 
-y_pred = tree.predict(X_test)
+if __name__ == '__main__':
+    main()
 
-output = pd.DataFrame({'ID': X_test.iloc[:, 0], 'Prediction' : y_pred})
-
-
-out_path = 'output/tree_prediction.tsv'
-output.to_csv(out_path, sep = '\t', index= False)
-
-'''
 
 
