@@ -1,32 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Sep 24 12:45:34 2024
 
-@author: gyusz
-"""
 
-amino_acid_frequencies = {
-'A': 0.074,  # Alanine
-'R': 0.042,  # Arginine
-'N': 0.044,  # Asparagine
-'D': 0.059,  # Aspartic Acid
-'C': 0.033,  # Cysteine
-'E': 0.058,  # Glutamic Acid
-'Q': 0.037,  # Glutamine
-'G': 0.074,  # Glycine
-'H': 0.029,  # Histidine
-'I': 0.038,  # Isoleucine
-'L': 0.076,  # Leucine
-'K': 0.072,  # Lysine
-'M': 0.018,  # Methionine
-'F': 0.04,  # Phenylalanine
-'P': 0.050,  # Proline
-'S': 0.0810,  # Serine
-'T': 0.062,  # Threonine
-'W': 0.013,  # Tryptophan
-'Y': 0.033,  # Tyrosine
-'V': 0.068,  # Valine
-}
 import pandas as pd
 import numpy as np
 import sklearn
@@ -57,7 +31,37 @@ mask = ~(data_train.isin([ 'U', 'o', '+'])).any(axis=1)
 # Apply the mask to both X_train and y_train
 X_train = X_train[mask].reset_index(drop=True)
 y_train = y_train[mask].reset_index(drop=True)
-# For X_train
+
+
+# Background frequencies of amino acids
+amino_acid_frequencies = {
+'A': 0.074,  # Alanine
+'R': 0.042,  # Arginine
+'N': 0.044,  # Asparagine
+'D': 0.059,  # Aspartic Acid
+'C': 0.033,  # Cysteine
+'E': 0.058,  # Glutamic Acid
+'Q': 0.037,  # Glutamine
+'G': 0.074,  # Glycine
+'H': 0.029,  # Histidine
+'I': 0.038,  # Isoleucine
+'L': 0.076,  # Leucine
+'K': 0.072,  # Lysine
+'M': 0.018,  # Methionine
+'F': 0.04,  # Phenylalanine
+'P': 0.050,  # Proline
+'S': 0.0810,  # Serine
+'T': 0.062,  # Threonine
+'W': 0.013,  # Tryptophan
+'Y': 0.033,  # Tyrosine
+'V': 0.068,  # Valine
+}
+
+
+
+# Amino acids common in beta sheets
+
+
 
 beta_sheet_aa = [
     "I",  # Isoleucine
@@ -107,20 +111,12 @@ for index, row in X_train.iterrows():
 
     x= row['mut_aa']
     z= row['ref_aa']
-    if True: #row[f'{x}_ratio']/amino_acid_frequencies[x] > 2:
-        X_train.at[index, 'aa_ratio_mut'] = row[f'{x}_ratio']/amino_acid_frequencies[x]
-    #elif row[f'{x}_ratio']/amino_acid_frequencies[x] > 1:
-       # X_train.at[index, 'aa_ratio_mut'] = 1
-    #else:
-       # X_train.at[index, 'aa_ratio_mut'] = 0
-        
-    if True:
+    
+    X_train.at[index, 'aa_ratio_mut'] = row[f'{x}_ratio']/amino_acid_frequencies[x]
+   
          
-         X_train.at[index, 'aa_ratio_ref'] = row[f'{z}_ratio']/amino_acid_frequencies[z]
-    #else:
-      #  X_train.at[index, 'aa_ratio_ref'] = 0
-   # if row[f'{z}_ratio']/amino_acid_frequencies[z] > 3:
-       # X_train.at[index, 'aa_ratio_ref'] = 3
+    X_train.at[index, 'aa_ratio_ref'] = row[f'{z}_ratio']/amino_acid_frequencies[z]
+   
    
     
 
@@ -157,7 +153,7 @@ for index, row in X_test.iterrows():
     
   
 
-
+# Label encoding each amino acid as their Eisenber hydrophobicity
 hydrophobicity_dict_eisenberg = {
     'A': 0.62,   # Alanine
     'C': 0.29,   # Cysteine
@@ -200,11 +196,14 @@ params = {
     'random_state': 42                # Ensure reproducibility
 }
 
+# Optimal parameters obtained from hyperparameter tuning
 params ={'colsample_bytree': 0.6842052413176569, 'gamma': 4.546976958278643, 'learning_rate': 0.002341619497778759, 'max_depth': 14, 'min_child_weight': 1.0, 'n_estimators': 10000, 'reg_alpha': 0.2596870025918193, 'reg_lambda': 4.161182806030448, 'scale_pos_weight': 3.626399287792276, 'subsample': 0.9018541597688445}
 
+
+# Creating the classifier
 tree = XGBClassifier(**params)
 
-
+# Using only a subset of features
 selected_features = ['ref_aa', 'mut_aa', 'alpha']
 
 
@@ -217,9 +216,13 @@ y_train = y_train.map({'Benign':0, 'Pathogenic': 1})
 
 X_train =X_train.apply(pd.to_numeric, errors='coerce')
 X_test =X_test.apply(pd.to_numeric, errors='coerce')
+
+# Training the model and creating prediction for the test set
 tree.fit(X_train, y_train)
 prediction = tree.predict_proba(X_test)
 
+
+# Deriving and plotting importances
 importances = tree.feature_importances_
 indices = np.argsort(importances)[::-1]
 import matplotlib.pyplot as plt
@@ -231,4 +234,7 @@ plt.savefig('output/importance.png')
 
 final_df = pd.concat([test_data.iloc[:,0], pd.Series(prediction[:,1])], axis = 1)
 
-final_df.to_csv('output/ml_prediction.tsv', sep='\t', index = False, header = False)
+
+# Saving the output as tsv
+out_path = 'xgb_restults.tsv'
+final_df.to_csv(out_path, sep='\t', index = False, header = False)
