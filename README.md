@@ -40,7 +40,7 @@ The model undergoes hyperparameter tuning using **Bayesian optimization**, ensur
 ### Selected Features
 Engineered features were derived from the mutation and surrounding sequence. For each mutation, we calculated the relative frequency of the reference and mutated amino acid in the sequence (normalized by background frequencies). We also computed an alpha score for the amino acids proximal to the mutation site. This score was derived by subtracting the count of amino acids frequently present in beta sheets from those in alpha helices. This was performed in the immediate proximity (+/-2 amino acids) of the mutation position.
 
-While this is a simplified metric of secondary structure, it was employed for the sake of simplicity.
+While this is a oversimplified metric of secondary structure, it was employed for the sake of simplicity.
 
 From the dataset, the most important features for prediction were selected using **Recursive Feature Elimination**:
 - The original and mutated amino acid, including their hydrophobicity properties
@@ -67,3 +67,8 @@ For each mutation, the affected protein's sequence is retrieved using the **NCBI
 - The sequence is parsed and used in further feature engineering.
 
 The complete process is automated using Python's `requests` library to communicate with the APIs, and `xmltodict` and `pandas` for data parsing and manipulation.
+
+### Cleaning
+Further data cleaning was done to remove: Entries with the same genomic location or ones that were close to each other (15 nucleic acid range). Training examples with the same genomic locations as test examples were also removed to avoid data leakage.
+### Final Train data
+The training data included 29548 examples in total. The train data is balanced containing 50% Bening and 50% Pathogenic labelled entries.
