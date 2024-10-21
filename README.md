@@ -4,6 +4,7 @@
 - [Abstract](#abstract)
 - [Results](#results)
 - [Conclusions](#conclusions)
+- [Methods](#methods)
 - [Model Description](#model-description)
 - [Data Acquisition](#data-acquisition)
 
@@ -22,6 +23,9 @@ The project applies a machine learning pipeline to classify missense mutations a
 ## Conclusions
 The model does not outperform popular impact prediction models like SIFT [2] or PolyPhen2 [3], however, its predictive power is markedly higher than that of the Baseline model, which is based on the BLOSUM62 matrix [5].
 
+
+
+## Methods
 ## Model Description
 This project uses the **XGBoost** algorithm, a highly efficient gradient boosting model, to predict whether a given mutation is **pathogenic** or **benign** [6]. The model's input features include:
 - Neighboring amino acids around the mutation site
