@@ -32,7 +32,7 @@ This project uses the **XGBoost** algorithm, a highly efficient gradient boostin
 - Hydrophobicity scores (each amino acid was label encoded using their Eisenberg Hydrophobicity score, as this uniquely labels each amino acid compared to other metrics) [<a href="#ref7">7</a>]
 - Engineered features (see below)
 
-The model undergoes hyperparameter tuning using **Bayesian optimization** [<a href="#ref4">4</a>], ensuring efficient exploration of the parameter space to find the best settings.
+The model undergoes hyperparameter tuning using **Bayesian optimization** [<a href="#ref4">4</a>], ensuring efficient exploration of the parameter space to find the best parameters.
 
 ### Selected Features
 Engineered features were derived from the mutation and surrounding sequence. For each mutation, we calculated the relative frequency of the reference and mutated amino acid in the sequence (normalized by background frequencies). We also computed an alpha score for the amino acids proximal to the mutation site. This score was derived by subtracting the count of amino acids frequently present in beta sheets from those in alpha helices. This was performed in the immediate proximity (+/-2 amino acids) of the mutation position [<a href="#ref8">8</a>].
