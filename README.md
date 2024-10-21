@@ -29,7 +29,7 @@ The model does not outperform popular impact prediction models like SIFT [<a hre
 This project uses the **XGBoost** algorithm, a highly efficient gradient boosting model, to predict whether a given mutation is **pathogenic** or **benign** [<a href="#ref6">6</a>]. The model's input features include:
 - Neighboring amino acids around the mutation site
 - Ratios of various amino acids in the protein sequence
-- Hydrophobicity scores (each amino acid was label encoded using their Eisenberg Hydrophobicity score, as this uniquely labels each amino acid compared to other metrics) [<a href="#ref7">7</a>]
+- Hydrophobicity scores (each amino acid was label encoded using their Eisenberg Hydrophobicity score, as this uniquely labels each amino acid) [<a href="#ref7">7</a>]
 - Engineered features (see below)
 
 The model undergoes hyperparameter tuning using **Bayesian optimization** [<a href="#ref4">4</a>], ensuring efficient exploration of the parameter space to find the best parameters.
