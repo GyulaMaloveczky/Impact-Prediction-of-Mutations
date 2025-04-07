@@ -35,7 +35,7 @@ This project uses the **XGBoost** algorithm, a highly efficient gradient boostin
 The model undergoes hyperparameter tuning using **Bayesian optimization** [<a href="#ref4">4</a>], ensuring efficient exploration of the parameter space to find the best parameters.
 
 ### Selected Features
-Engineered features were derived from the mutation and surrounding sequence. For each mutation, we calculated the relative frequency of the reference and mutated amino acid in the sequence (normalized by background frequencies). We also computed an alpha score for the amino acids proximal to the mutation site. This score was derived by subtracting the count of amino acids frequently present in beta sheets from those in alpha helices (frequently present was defined by having higher than 1 propensit according to: [<a href="#ref10">10</a>]). This was performed in the immediate proximity (+/-2 amino acids) of the mutation position [<a href="#ref8">8</a>].
+Engineered features were derived from the mutation and surrounding sequence. For each mutation, we calculated the relative frequency of the reference and mutated amino acid in the sequence (normalized by background frequencies). We also computed an alpha score for the amino acids proximal to the mutation site. This score was derived by subtracting the count of amino acids frequently present in beta sheets from those in alpha helices (frequently present was defined by having higher than 1 propensit according to: [<a href="#ref8">8</a>]). This was performed in the immediate proximity (+/-2 amino acids) of the mutation position.
 
 While this is an oversimplified metric of secondary structure, it was employed for the sake of simplicity.
 
@@ -79,7 +79,7 @@ The training data included 29,548 examples in total. The train data is balanced,
 <a id="ref5">5. BLOSUM62: Henikoff, S., & Henikoff, J. G. (1992). Amino acid substitution matrices from protein blocks. *Proceedings of the National Academy of Sciences*, 89(22), 10915-10919.</a>  
 <a id="ref6">6. XGBoost: Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. *Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*.</a>  
 <a id="ref7">7. Eisenberg Hydrophobicity Scale: Eisenberg, D., Schwarz, E., Komaromy, M., & Wall, R. (1984). Analysis of membrane and surface protein sequences with the hydrophobic moment plot. *Journal of Molecular Biology*, 179(1), 125-142.</a>  
-<a id="ref8">8. Alpha and Beta Amino Acids: Chou, P. Y., & Fasman, G. D. (1978). Prediction of the secondary structure of proteins from their amino acid sequence. *Advances in Enzymology and Related Areas of Molecular Biology*, 47, 45-148.</a>  
+<a id="ref8">8. Chou, P. Y., & Fasman, G. D. (1974). Prediction of protein conformation. *Biochemistry*, **13**(2), 222–245.</a>
 <a id="ref9">9. UniProt: https://www.uniprot.org/</a>
-<a id="ref10">10. Chou, P. Y., & Fasman, G. D. (1974). Prediction of protein conformation. *Biochemistry*, **13**(2), 222–245. [https://doi.org/10.1021/bi00699a002](https://doi.org/10.1021/bi00699a002)</a>
+
 
