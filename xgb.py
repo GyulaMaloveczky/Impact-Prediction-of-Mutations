@@ -64,26 +64,32 @@ amino_acid_frequencies = {
 
 
 beta_sheet_aa = [
-    "I",  # Isoleucine
-    "V",  # Valine
-    "F",  # Phenylalanine
-    "Y",  # Tyrosine
-    "W",  # Tryptophan
-    "N",  # Asparagine
-    "Q",  # Glutamine
-    "T"   # Threonine
+     "I",  # Ile
+     "V",  # Val
+     "F",  # Phe
+     "Y",  # Tyr
+     "W",  # Trp
+     "L"   # Leu
+     "C"   # Cys
+     "Q"   #Gln
+     "T"   # Thr
+     "M"   # Met
 ]
 
 # Amino acids common in alpha helices
 alpha_helix_aa = [
-    "A",  # Alanine
-    "E",  # Glutamic Acid
-    "L",  # Leucine
-    "M",  # Methionine
+    "A",  # Ala
+    "Q",  # Gln
+    "E",  # Glu
+    "L",  # Leu
+    "M",  # Met
     "R",  # Arginine
-    "K",  # Lysine
-    "H",  # Histidine
+    "K",  # Lys
+    "H",  # His
     "S"   # Serine
+    "F",  # Phe
+    "W"   # Trp
+    "V"   #Val
 ]
 
 
