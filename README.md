@@ -21,8 +21,10 @@ The project applies a machine learning pipeline to classify missense mutations a
 ![comparison](https://github.com/user-attachments/assets/c3bbdf23-2058-4800-a2be-93e003b64bc4)
 
 ## Conclusions
-The model does not outperform popular impact prediction models like SIFT [<a href="#ref2">2</a>] or PolyPhen2 [<a href="#ref3">3</a>], however, its predictive power is markedly higher than that of the Baseline model, which is based on the BLOSUM62 matrix [<a href="#ref5">5</a>].
-
+The model does not outperform popular impact prediction models like SIFT [<a href="#ref2">2</a>] or PolyPhen2 [<a href="#ref3">3</a>], however, its predictive power is markedly higher than that of the Baseline model, which is a simple BLOSUM62 matrix based model, where the BLOSUM62 score of each model is taken as the prediction [<a href="#ref5">5</a>].
+## Limitations
+The model's lower performance compared to the state of the art is likely due to the fact that it doesn't use evolutionary conservation data, which is the most important predictor in both SIFT and Polyphen-2. However, not having to retrieve MSAs for every sequence can speed up the prediction.
+Another potential weakness of the model is that it might generalize poorly to proteins or folds which did not have homologues in the training data, since during cross validation and test splits I did not consider homology. This is usually considered data leakage, however here, it was a deliberate choice, allowing the model to learn patterns between homologues sequences. 
 
 ## Methods
 ## Model Description
