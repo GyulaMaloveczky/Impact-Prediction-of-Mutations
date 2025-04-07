@@ -56,29 +56,34 @@ def prepare_data():
     
     # List of amino acids common in beta helices
     beta_sheet_aa = [
-        "I",  # Isoleucine
-        "V",  # Valine
-        "F",  # Phenylalanine
-        "Y",  # Tyrosine
-        "W",  # Tryptophan
-        "N",  # Asparagine
-        "Q",  # Glutamine
-        "T"   # Threonine
-    ]
-    
-  
-    
-    # Amino acids common in alpha helices
-    alpha_helix_aa = [
-        "A",  # Alanine
-        "E",  # Glutamic Acid
-        "L",  # Leucine
-        "M",  # Methionine
-        "R",  # Arginine
-        "K",  # Lysine
-        "H",  # Histidine
-        "S"   # Serine
-    ]
+     "I",  # Ile
+     "V",  # Val
+     "F",  # Phe
+     "Y",  # Tyr
+     "W",  # Trp
+     "L"   # Leu
+     "C"   # Cys
+     "Q"   #Gln
+     "T"   # Thr
+     "M"   # Met
+]
+
+# Amino acids common in alpha helices
+alpha_helix_aa = [
+    "A",  # Ala
+    "Q",  # Gln
+    "E",  # Glu
+    "L",  # Leu
+    "M",  # Met
+    "R",  # Arginine
+    "K",  # Lys
+    "H",  # His
+    "S"   # Serine
+    "F",  # Phe
+    "W"   # Trp
+    "V"   #Val
+]
+
     # Label encoding the amino acids by their hidrophobicity (Eisenberg hydrophobicity was used as it gives a unique value for each aa, need for proper label encoding) and the stop codon is labeled as 1000
     
     hydrophobicity_dict_eisenberg = {
